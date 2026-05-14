@@ -37,9 +37,6 @@ namespace Backend.Controllers{
           }
       });
 
-      g.MapGet("/test",async()=>{
-        return Results.Ok(new {message = "SIpp"});
-      }).RequireAuthorization(Policies.Admin);
     }
   }
 }
