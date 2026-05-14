@@ -8,6 +8,15 @@ using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
 
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("AllowFrontend", policy =>
+    {
+        policy.WithOrigins("http://localhost:4321")
+              .AllowAnyHeader()
+              .AllowAnyMethod();
+    });
+});
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
 .AddJwtBearer(options =>
 {
@@ -40,6 +49,7 @@ builder.Services.AddSingleton<Database>();
 builder.Services.AddScoped<IPasswordService, PasswordService>();
 builder.Services.AddScoped<JwtServices>();
 builder.Services.AddScoped<AuthService>();
+builder.Services.AddScoped<UserServices>();
 
 builder.Services.AddOpenApi();
 
@@ -73,10 +83,11 @@ app.Use(async (context, next) =>
 
 app.UseAuthentication();
 app.UseAuthorization();
-
+app.UseCors("AllowFrontend");
 app.MapOpenApi();
 //Controllers
 app.MapAuth();
+app.MapUser();
 app.Run();
 
 

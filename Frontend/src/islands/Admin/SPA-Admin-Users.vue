@@ -19,11 +19,20 @@ const isEdit = ref(false);
 /**
  * MOCK DATA (replace with API later)
  */
-function fetchUsers() {
+async function fetchUsers() {
   users.value = [
     { id: 1, name: "Alice", email: "alice@mail.com", role: "Admin" },
     { id: 2, name: "Budi", email: "budi@mail.com", role: "Editor" }
   ];
+  try {
+    const response = await fetch("http://localhost:3000/api/v1/users");
+    if(!response.ok){
+      throw new Error("Failed to fetch")
+    }
+    users.value = await response.json();
+  } catch (error) {
+    console.log(error);
+  }
 }
 
 onMounted(fetchUsers);
