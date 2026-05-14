@@ -1,17 +1,60 @@
 ---
-
 ---
 
 <html lang="en">
-	<head>
-		<meta charset="utf-8" />
-		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-		<link rel="icon" href="/favicon.ico" />
-		<meta name="viewport" content="width=device-width" />
-		<meta name="generator" content={Astro.generator} />
-		<title>Astro</title>
-	</head>
-	<body>
-		<h1>Astro</h1>
-	</body>
+  <head>
+    <meta charset="UTF-8" />
+    <title>DashX - Modern Admin Dashboard</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <script src="https://cdn.tailwindcss.com"></script>
+  </head>
+
+  <body class="bg-zinc-950 text-zinc-100">
+
+    <!-- HERO -->
+    <section class="min-h-screen flex flex-col items-center justify-center text-center px-6">
+
+      <h1 class="text-4xl md:text-6xl font-bold tracking-tight">
+        Build faster dashboards with <span class="text-sky-400">DashX</span>
+      </h1>
+
+      <p class="mt-4 text-zinc-400 max-w-xl">
+        A modern admin dashboard built with Astro + Vue. Fast, simple, and scalable.
+      </p>
+
+      <div class="mt-8 flex gap-3">
+        <a href="/admin/dashboard"
+           class="px-5 py-2 rounded-lg bg-sky-500 hover:bg-sky-600 text-white font-medium">
+          Open Dashboard
+        </a>
+
+        <a href="#features"
+           class="px-5 py-2 rounded-lg border border-zinc-700 hover:bg-zinc-800">
+          Learn More
+        </a>
+      </div>
+
+    </section>
+
+    <!-- FEATURES -->
+    <section id="features" class="py-20 px-6 max-w-5xl mx-auto grid md:grid-cols-3 gap-4">
+
+      <div class="p-5 border border-zinc-800 rounded-xl bg-zinc-900">
+        ⚡ Fast
+        <p class="text-zinc-400 text-sm mt-2">Astro delivers near-zero JS by default.</p>
+      </div>
+
+      <div class="p-5 border border-zinc-800 rounded-xl bg-zinc-900">
+        🧩 Modular
+        <p class="text-zinc-400 text-sm mt-2">Use Vue only where needed.</p>
+      </div>
+
+      <div class="p-5 border border-zinc-800 rounded-xl bg-zinc-900">
+        📦 Scalable
+        <p class="text-zinc-400 text-sm mt-2">Perfect for real SaaS projects.</p>
+      </div>
+
+    </section>
+
+  </body>
 </html>

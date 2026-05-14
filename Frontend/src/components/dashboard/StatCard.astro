@@ -1,0 +1,20 @@
+---
+interface Props {
+  label: string
+  value: string
+  change?: string
+  trend?: 'up' | 'down' | 'flat'
+  icon?: string
+}
+const { label, value, change, trend = 'flat', icon } = Astro.props;
+const color = { up: 'text-emerald-400', down: 'text-rose-400', flat: 'text-zinc-500' }[trend];
+const arrow = { up: '▲', down: '▼', flat: '–' }[trend];
+---
+<div class="bg-zinc-900 border border-zinc-800 rounded-xl p-4 flex flex-col gap-2 hover:border-zinc-700 transition-colors">
+  <div class="flex items-center justify-between">
+    <span class="text-[10px] uppercase tracking-widest text-zinc-500">{label}</span>
+    {icon && <i class={`ti ti-${icon} text-zinc-600 text-base`}></i>}
+  </div>
+  <p class="text-2xl font-bold text-white">{value}</p>
+  {change && <p class:list={['text-xs', color]}>{arrow} {change}</p>}
+</div>
