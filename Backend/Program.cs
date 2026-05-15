@@ -50,6 +50,7 @@ builder.Services.AddScoped<IPasswordService, PasswordService>();
 builder.Services.AddScoped<JwtServices>();
 builder.Services.AddScoped<AuthService>();
 builder.Services.AddScoped<UserServices>();
+builder.Services.AddScoped<CategoryService>();
 
 builder.Services.AddOpenApi();
 
@@ -88,6 +89,7 @@ app.MapOpenApi();
 //Controllers
 app.MapAuth();
 app.MapUser();
+app.MapCategory();
 app.Run();
 
 
