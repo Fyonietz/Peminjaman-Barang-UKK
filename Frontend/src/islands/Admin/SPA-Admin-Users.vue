@@ -1,17 +1,17 @@
 <script setup>
 import { ref, onMounted } from "vue";
-
+import {apiFetch} from "../../lib/api.ts"
 /**
  * Matches your UsersDTO
  */
 const users = ref([]);
-
+const roles = ref([]);
 const form = ref({
   id: null,
   name: "",
   email: "",
   password: "",
-  role: ""
+  id_role: null
 });
 
 const isEdit = ref(false);
@@ -25,7 +25,7 @@ async function fetchUsers() {
     { id: 2, name: "Budi", email: "budi@mail.com", role: "Editor" }
   ];
   try {
-    const response = await fetch("http://localhost:3000/api/v1/users");
+    const response = await apiFetch("/users");
     if(!response.ok){
       throw new Error("Failed to fetch")
     }
@@ -34,8 +34,18 @@ async function fetchUsers() {
     console.log(error);
   }
 }
-
-onMounted(fetchUsers);
+async function fetchRoles(){
+  try{                                 
+     const response = await apiFetch("/auth/roles");
+     roles.value = await response.json();
+  }catch(error){
+    console.log(error);
+  }
+}
+onMounted(()=>{
+    fetchUsers();
+    fetchRoles();
+});
  const showModal = ref(false);
  function openCreate() {
   resetForm();
@@ -44,21 +54,39 @@ onMounted(fetchUsers);
 /**
  * CREATE / UPDATE
  */
-function saveUser() {
-  if (isEdit.value) {
-    const index = users.value.findIndex(u => u.id === form.value.id);
-    users.value[index] = { ...form.value };
-  } else {
-    users.value.push({
-      id: Date.now(),
-      name: form.value.name,
-      email: form.value.email,
-      role: form.value.role
-    });
-  }
+async function saveUser() {
+  try {
 
-  resetForm();
-  showModal.value = false;
+    if (isEdit.value) {
+
+      await apiFetch(`/users/${form.value.id}`, {
+        method: "PATCH",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify(form.value)
+      });
+
+    } else {
+
+      await apiFetch("/auth/register", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify(form.value)
+      });
+
+    }
+
+    await fetchUsers();
+
+    showModal.value = false;
+    resetForm();
+
+  } catch (error) {
+    console.error(error);
+  }
 }
 
 /**
@@ -73,8 +101,25 @@ function editUser(user) {
 /**
  * DELETE
  */
-function deleteUser(id) {
-  users.value = users.value.filter(u => u.id !== id);
+async function deleteUser(id) {
+  const confirmed = confirm("Delete this user?");
+
+  if (!confirmed) return;
+
+  try {
+    const response = await apiFetch(`/users/${id}`, {
+      method: "DELETE"
+    });
+
+    if (!response.ok) {
+      throw new Error("Failed to delete user");
+    }
+
+    users.value = users.value.filter(u => u.id !== id);
+
+  } catch (error) {
+    console.error(error);
+  }
 }
 
 /**
@@ -86,7 +131,7 @@ function resetForm() {
     name: "",
     email: "",
     password: "",
-    role: ""
+    id_role: null
   };
 
   isEdit.value = false;
@@ -214,11 +259,20 @@ function resetForm() {
         placeholder="Password"
       />
 
-      <input
-        v-model="form.role"
-        class="w-full p-3 bg-zinc-800 border border-zinc-700 rounded-lg text-white"
-        placeholder="Role"
-      />
+      <select
+  v-model="form.id_role"
+  class="w-full p-3 bg-zinc-800 border border-zinc-700 rounded-lg text-white"
+>
+  <option value="" disabled>Select Role</option>
+
+  <option
+    v-for="role in roles"
+    :key="role.id"
+    :value="role.id"
+  >
+    {{ role.name }}
+  </option>
+</select>
 
     </div>
 

@@ -1,0 +1,53 @@
+---
+import "../styles/global.css"
+import MainLayout from '../layouts/MainLayout.astro'
+import LoginForm from '../components/LoginForm.astro'
+---
+
+<MainLayout title="Login | BengkelRent">
+
+  <div class="grid lg:grid-cols-2 min-h-screen">
+
+    <!-- Left -->
+    <div
+      class="hidden lg:flex flex-col justify-center bg-gradient-to-br from-orange-500 to-red-600 text-white p-16"
+    >
+      <h1 class="text-5xl font-bold leading-tight mb-6">
+        Sistem Penyewaan
+        <br />
+        Peralatan Bengkel
+      </h1>
+
+      <p class="text-lg text-orange-100 leading-relaxed max-w-xl">
+        Solusi cepat untuk kebutuhan perjalanan dan perbaikan darurat.
+        Cari, sewa, dan gunakan alat bengkel kapan saja dengan mudah.
+      </p>
+
+      <!-- Features -->
+      <div class="mt-10 space-y-4">
+
+        <div class="flex items-center gap-3">
+          <div class="w-3 h-3 rounded-full bg-white"></div>
+          <span>Quick Booking</span>
+        </div>
+
+        <div class="flex items-center gap-3">
+          <div class="w-3 h-3 rounded-full bg-white"></div>
+          <span>Emergency Assistance</span>
+        </div>
+
+        <div class="flex items-center gap-3">
+          <div class="w-3 h-3 rounded-full bg-white"></div>
+          <span>Tracking Penyewaan</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Right -->
+    <div class="flex items-center justify-center p-6 bg-gray-100">
+      <LoginForm />
+    </div>
+
+  </div>
+
+</MainLayout>

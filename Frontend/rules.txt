@@ -1,0 +1,339 @@
+UI/UX Rules & Design System
+Sistem Penyewaan Peralatan Bengkel (Astro + Tailwind)
+
+Gunakan summary ini sebagai guideline tetap untuk AI agent lain agar desain dan coding tetap konsisten.
+
+PROJECT OVERVIEW
+
+Nama sistem:
+
+Sistem Penyewaan Peralatan Bengkel Skala Kecil untuk Kebutuhan Perjalanan dan Perbaikan Darurat
+
+Tujuan:
+
+Memudahkan pengguna menyewa alat bengkel
+Fokus mobile
+Cepat digunakan saat kondisi darurat
+UX sederhana dan minim langkah
+
+Tech stack:
+
+Astro
+TailwindCSS
+Vue.js
+Responsive Design
+Mobile First
+DESIGN PRINCIPLES
+1. Mobile First
+
+Karena user kemungkinan:
+
+sedang di jalan
+menggunakan HP
+kondisi darurat
+
+Maka:
+
+tombol besar
+CTA jelas
+sedikit teks
+alur cepat
+maksimal 2–3 klik
+2. Emergency Friendly
+
+UI harus:
+
+mudah dipahami
+tidak ramai
+warna kontras
+cepat dibaca
+
+Prioritas:
+
+Cari alat
+Sewa alat
+Bantuan darurat
+3. Clean Modern UI
+
+Style:
+
+clean
+rounded
+soft shadow
+gradient modern
+spacing lega
+
+Inspirasi:
+
+Gojek
+Tokopedia
+Traveloka
+Grab
+COLOR SYSTEM
+colors: {
+  primary: '#F97316', // orange
+  secondary: '#DC2626', // red
+  dark: '#111827',
+  light: '#F9FAFB',
+  success: '#10B981',
+  warning: '#FACC15',
+  danger: '#EF4444'
+}
+TYPOGRAPHY
+
+Font:
+
+Inter
+Poppins
+
+Rules:
+
+Heading: bold
+Body: medium/regular
+Jangan terlalu kecil
+
+Sizing:
+
+h1 → text-4xl / text-5xl
+h2 → text-3xl
+body → text-base
+caption → text-sm
+SPACING RULES
+
+Gunakan:
+
+rounded-2xl
+rounded-3xl
+p-4
+p-6
+p-8
+gap-4
+gap-6
+
+Jangan:
+
+terlalu rapat
+terlalu banyak border
+COMPONENT RULES
+BUTTON
+
+Primary button:
+
+class="bg-orange-500 hover:bg-orange-600 text-white rounded-xl px-4 py-3 font-semibold transition"
+
+Rules:
+
+rounded-xl minimum
+tinggi tombol besar
+mudah ditekan di mobile
+INPUT
+class="w-full rounded-xl border border-gray-300 px-4 py-3 focus:ring-2 focus:ring-orange-500 outline-none"
+
+Rules:
+
+clean
+simple
+focus state jelas
+CARD
+class="bg-white rounded-2xl shadow-md hover:shadow-xl transition"
+
+Rules:
+
+gunakan shadow lembut
+hover animation ringan
+padding lega
+PAGE STRUCTURE
+LOGIN PAGE
+
+Layout:
+
+Desktop:
+kiri → hero section
+kanan → login form
+Mobile:
+hanya login form
+
+Hero:
+
+gradient orange → red
+ilustrasi kendaraan/peralatan
+DASHBOARD
+
+Structure:
+
+Navbar
+Sidebar
+Main Content
+
+Isi:
+
+search
+kategori alat
+tool cards
+status penyewaan
+tombol emergency
+TOOL CARD
+
+Isi:
+
+gambar alat
+nama alat
+harga
+status tersedia
+tombol sewa
+
+Status:
+
+tersedia → hijau
+dipinjam → merah
+maintenance → kuning
+UX FLOW
+
+User flow wajib sederhana:
+
+Login
+→ Dashboard
+→ Cari Alat
+→ Detail Alat
+→ Booking
+→ Pembayaran
+→ Tracking
+→ Pengembalian
+
+Maksimal:
+
+sedikit popup
+sedikit form
+sedikit langkah
+RESPONSIVE RULES
+MOBILE
+
+Prioritas utama.
+
+Gunakan:
+
+single column
+bottom navigation
+floating CTA
+full width card
+DESKTOP
+
+Gunakan:
+
+sidebar kiri
+grid tools
+statistik dashboard
+ANIMATION RULES
+
+Gunakan animasi ringan saja.
+
+Contoh:
+
+class="transition duration-300 hover:scale-105"
+
+Hindari:
+
+animasi berat
+terlalu banyak motion
+ICON RULES
+
+Gunakan:
+
+Lucide Icons
+Heroicons
+
+Style:
+
+outline
+clean
+minimal
+ACCESSIBILITY RULES
+
+Wajib:
+
+contrast jelas
+tombol besar
+text readable
+focus visible
+FOLDER STRUCTURE
+src/
+ ├── components/
+ ├── layouts/
+ ├── pages/
+ ├── styles/
+ ├── lib/
+ ├── data/
+ └── assets/
+NAMING RULES
+
+Gunakan:
+
+PascalCase → component
+camelCase → variable/function
+kebab-case → file utilitas kecil
+
+Contoh:
+
+LoginForm.astro
+ToolCard.astro
+EmergencyButton.astro
+TAILWIND RULES
+
+Selalu gunakan:
+
+flex
+grid
+gap
+rounded
+shadow
+transition
+
+Kurangi:
+
+custom CSS berlebihan
+UI PRIORITIES
+
+Urutan prioritas UI:
+
+Emergency action
+Search tools
+Booking cepat
+Status alat
+Riwayat penyewaan
+FUTURE FEATURES
+
+AI agent harus mempertimbangkan support untuk:
+
+GPS tracking
+realtime availability
+payment gateway
+admin panel
+notification system
+dark mode
+PWA/mobile app
+CODING STYLE RULES
+
+AI agent harus:
+
+membuat component reusable
+menghindari inline style
+menggunakan Tailwind utility
+membuat code clean & modular
+responsive by default
+mobile-first
+FINAL DESIGN GOAL
+
+Desain harus terasa:
+
+cepat
+modern
+aman
+praktis
+membantu saat darurat
+ringan di HP
+
+Bukan:
+
+corporate kaku
+terlalu formal
+terlalu banyak ornamen

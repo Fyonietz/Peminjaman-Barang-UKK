@@ -17,7 +17,39 @@ namespace Backend.Controllers
             {
                 return Results.InternalServerError(e.Message);
             }
-        });
-      }
-    }
-}
+        }).RequireAuthorization(Policies.AdminAndStaff);
+
+      g.MapPatch("/{id}",async(UserServices service,IPasswordService Pservice,Users user,int id)=>{
+          try
+          {
+              user.Password = await Pservice.HashPasswordAsync(user.Password);
+              var res = await service.UpdateUser(id,user);
+              if(!res){
+                return Results.InternalServerError();
+              }
+              return Results.Ok();
+          }
+          catch (Exception e)
+          {
+            return Results.InternalServerError(e.Message);   
+          }
+      }).RequireAuthorization(Policies.AdminAndStaff);
+
+      g.MapDelete("/{id}",async(UserServices service,int id)=>{
+          try
+          {
+              var res = await service.DeleteUser(id);
+              if(!res){
+                return Results.InternalServerError();
+              }
+              return Results.Ok();
+          }
+          catch (Exception e)
+          {
+            return Results.InternalServerError(e.Message);   
+          }
+      });
+
+      }//Function
+    }//Class
+}//Namespace

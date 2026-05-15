@@ -69,11 +69,20 @@ namespace Backend.Services{
           public async Task<LoginResponse?> Login(LoginRequest data){
               using var conn = await db.connect();
 
-              var sql = "SELECT u.Id,u.Name,u.Email,u.Password,r.Name as Role FROM Users u JOIN Roles r ON r.id = u.Id_Role WHERE u.Name=@name";
-              var result = await conn.QueryFirstOrDefaultAsync<LoginResponse>(sql,new {name = data.Name,password=data.Password});
+              var sql = "SELECT u.Id,u.Name,u.Email,u.Password,r.Name as Role FROM Users u JOIN Roles r ON r.id = u.Id_Role WHERE u.Email=@email";
+              var result = await conn.QueryFirstOrDefaultAsync<LoginResponse>(sql,new {email = data.Email});
             
               return result ?? null;
           }
 
-    }
-}
+          public async Task<List<Roles>> GetRoles(){
+            using var conn = await db.connect();
+
+            var sql = "SELECT id,name FROM Roles";
+            var result = (await conn.QueryAsync<Roles>(sql)).ToList();
+
+            return result;
+          }
+
+    }//Class
+}//Namespace

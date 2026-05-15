@@ -18,7 +18,7 @@ namespace Backend.Controllers{
           }catch(Exception e){
             return Results.InternalServerError(e.Message);
           }
-      });
+      }).RequireAuthorization(Policies.AdminAndStaff);
 
       g.MapPost("/login",async(AuthService service,IPasswordService pService,LoginRequest req,JwtServices jwt)=>{
           try{
@@ -30,13 +30,27 @@ namespace Backend.Controllers{
             if(!verify){
               return Results.Unauthorized();
             }
+           res.Password ="";
            res.Token =  jwt.GenerateToken(res);
            return Results.Ok(res);
           }catch(Exception e){
             return Results.InternalServerError(e.Message);
           }
       });
+  
+    g.MapGet("/roles",async(AuthService service)=>{
+      try
+      {
+        var res = await service.GetRoles();
+        return Results.Ok(res);
+      }
+      catch (Exception e)
+      {
+          return Results.InternalServerError(e.Message);
+      }
+    }).RequireAuthorization(Policies.Admin);
 
-    }
-  }
-}
+
+    }//Main Function
+  }//Class
+}//Namespace
