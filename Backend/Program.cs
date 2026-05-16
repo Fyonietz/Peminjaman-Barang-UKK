@@ -51,6 +51,8 @@ builder.Services.AddScoped<JwtServices>();
 builder.Services.AddScoped<AuthService>();
 builder.Services.AddScoped<UserServices>();
 builder.Services.AddScoped<CategoryService>();
+builder.Services.AddScoped<ItemService>();
+builder.Services.AddScoped<ProductsService>();
 
 builder.Services.AddOpenApi();
 
@@ -85,11 +87,14 @@ app.Use(async (context, next) =>
 app.UseAuthentication();
 app.UseAuthorization();
 app.UseCors("AllowFrontend");
+app.UseStaticFiles();
 app.MapOpenApi();
 //Controllers
 app.MapAuth();
 app.MapUser();
 app.MapCategory();
+app.MapProducts();
+app.MapItem();
 app.Run();
 
 
