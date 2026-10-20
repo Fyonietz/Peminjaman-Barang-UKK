@@ -1,6 +1,6 @@
 // src/pages/Admin/DaftarBarangPage.tsx
-import { useState, useEffect, FormEvent } from 'react';
-import { Plus, Edit2, Trash2, Search, Package } from 'lucide-react';
+import { useState, useEffect, FormEvent, ChangeEvent } from 'react';
+import { Plus, Edit2, Trash2, Search, Package, Upload } from 'lucide-react';
 import { http } from '../../services/api';
 import Table, { type Column } from '../../components/ui/Table';
 import Modal from '../../components/ui/Modal';
@@ -23,6 +23,10 @@ interface Kategori {
   nama: string;
 }
 
+// Compute the base API host (without /api/v1) for static image resolution
+const API_BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:5162/api/v1';
+const API_HOST = API_BASE_URL.replace(/\/api\/v1\/?$/, '');
+
 export default function DaftarBarangPage() {
   const [data, setData] = useState<Alat[]>([]);
   const [kategoriList, setKategoriList] = useState<Kategori[]>([]);
@@ -44,13 +48,17 @@ export default function DaftarBarangPage() {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [selectedItem, setSelectedItem] = useState<Alat | null>(null);
 
+  // Form Field States
   const [formData, setFormData] = useState({
     idKategori: '',
     nama: '',
     deskripsi: '',
     hargaSewa: '',
-    imagePath: '',
   });
+
+  // File Upload State
+  const [selectedFile, setSelectedFile] = useState<File | null>(null);
+  const [previewUrl, setPreviewUrl] = useState<string | null>(null);
 
   useEffect(() => {
     fetchKategoriList();
@@ -98,6 +106,19 @@ export default function DaftarBarangPage() {
     fetchData();
   };
 
+  const handleFileChange = (e: ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (file) {
+      if (file.size > 2 * 1024 * 1024) {
+        setError('Ukuran file gambar maksimal 2 MB.');
+        return;
+      }
+      setSelectedFile(file);
+      setPreviewUrl(URL.createObjectURL(file));
+      setError(null);
+    }
+  };
+
   const handleOpenAdd = () => {
     setSelectedItem(null);
     setFormData({
@@ -105,8 +126,9 @@ export default function DaftarBarangPage() {
       nama: '',
       deskripsi: '',
       hargaSewa: '',
-      imagePath: '',
     });
+    setSelectedFile(null);
+    setPreviewUrl(null);
     setError(null);
     setIsFormOpen(true);
   };
@@ -118,8 +140,9 @@ export default function DaftarBarangPage() {
       nama: item.nama,
       deskripsi: item.deskripsi || '',
       hargaSewa: item.hargaSewa.toString(),
-      imagePath: item.imagePath || '',
     });
+    setSelectedFile(null);
+    setPreviewUrl(item.imagePath ? getFullImageUrl(item.imagePath) : null);
     setError(null);
     setIsFormOpen(true);
   };
@@ -134,19 +157,25 @@ export default function DaftarBarangPage() {
     setIsSubmitting(true);
     setError(null);
 
-    const payload = {
-      idKategori: Number(formData.idKategori),
-      nama: formData.nama,
-      deskripsi: formData.deskripsi,
-      hargaSewa: Number(formData.hargaSewa),
-      imagePath: formData.imagePath || null,
-    };
+    // Build multipart/form-data payload according to Section 6.4.1
+    const form = new FormData();
+    form.append('idKategori', formData.idKategori);
+    form.append('nama', formData.nama);
+    if (formData.deskripsi) {
+      form.append('deskripsi', formData.deskripsi);
+    }
+    form.append('hargaSewa', formData.hargaSewa);
+
+    // Only append file if a new file was chosen
+    if (selectedFile) {
+      form.append('gambar', selectedFile);
+    }
 
     try {
       if (selectedItem) {
-        await http.put(`/alat/${selectedItem.id}`, payload);
+        await http.put(`/alat/${selectedItem.id}`, form);
       } else {
-        await http.post('/alat', payload);
+        await http.post('/alat', form);
       }
       setIsFormOpen(false);
       fetchData();
@@ -172,6 +201,11 @@ export default function DaftarBarangPage() {
     }
   };
 
+  const getFullImageUrl = (path: string | null) => {
+    if (!path) return null;
+    return path.startsWith('http') ? path : `${API_HOST}${path}`;
+  };
+
   const formatRupiah = (val: number) => {
     return new Intl.NumberFormat('id-ID', {
       style: 'currency',
@@ -183,22 +217,25 @@ export default function DaftarBarangPage() {
   const columns: Column<Alat>[] = [
     {
       header: 'FOTO',
-      accessor: (row) => (
-        <div className="w-12 h-12 rounded-lg bg-gray-100 border border-gray-200 overflow-hidden flex items-center justify-center">
-          {row.imagePath ? (
-            <img
-              src={row.imagePath}
-              alt={row.nama}
-              className="w-full h-full object-cover"
-              onError={(e) => {
-                (e.target as HTMLElement).style.display = 'none';
-              }}
-            />
-          ) : (
-            <Package className="w-6 h-6 text-gray-400" />
-          )}
-        </div>
-      ),
+      accessor: (row) => {
+        const imgUrl = getFullImageUrl(row.imagePath);
+        return (
+          <div className="w-12 h-12 rounded-lg bg-gray-100 border border-gray-200 overflow-hidden flex items-center justify-center">
+            {imgUrl ? (
+              <img
+                src={imgUrl}
+                alt={row.nama}
+                className="w-full h-full object-cover"
+                onError={(e) => {
+                  (e.target as HTMLElement).style.display = 'none';
+                }}
+              />
+            ) : (
+              <Package className="w-6 h-6 text-gray-400" />
+            )}
+          </div>
+        );
+      },
       className: 'w-16',
     },
     {
@@ -259,10 +296,11 @@ export default function DaftarBarangPage() {
 
   return (
     <div className="flex flex-col gap-6">
+      {/* Header */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div>
           <h1 className="text-2xl font-bold text-gray-800">Daftar Peralatan Camping</h1>
-          <p className="text-sm text-gray-500 mt-1">Kelola barang, harga sewa, dan pantau ketersediaan stok</p>
+          <p className="text-sm text-gray-500 mt-1">Kelola barang, harga sewa, dan upload foto unit</p>
         </div>
         <button
           type="button"
@@ -274,8 +312,10 @@ export default function DaftarBarangPage() {
         </button>
       </div>
 
+      {/* Error Alert */}
       {error && <div className="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded-xl text-sm">{error}</div>}
 
+      {/* Action Bar (Search & Filter) */}
       <div className="flex flex-col md:flex-row items-center justify-between gap-4 bg-white p-4 rounded-xl border border-gray-200 shadow-sm">
         <form onSubmit={handleSearchSubmit} className="relative w-full md:w-80">
           <input
@@ -311,6 +351,7 @@ export default function DaftarBarangPage() {
         </div>
       </div>
 
+      {/* Paginated Table */}
       <Table
         data={data}
         columns={columns}
@@ -324,6 +365,7 @@ export default function DaftarBarangPage() {
         }}
       />
 
+      {/* Add / Edit Form Modal */}
       <Modal isOpen={isFormOpen} onClose={() => setIsFormOpen(false)} title={selectedItem ? 'Edit Barang' : 'Tambah Barang Baru'} maxWidth="max-w-lg">
         <form onSubmit={handleSubmit} className="flex flex-col gap-4">
           <div className="flex flex-col gap-1.5">
@@ -371,15 +413,27 @@ export default function DaftarBarangPage() {
             />
           </div>
 
+          {/* File Input for Image Upload */}
           <div className="flex flex-col gap-1.5">
-            <label className="text-sm font-medium text-gray-700">URL Gambar (Opsional)</label>
-            <input
-              type="url"
-              value={formData.imagePath}
-              onChange={(e) => setFormData({ ...formData, imagePath: e.target.value })}
-              className="px-3 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-[#32a149]/20 focus:border-[#32a149]"
-              placeholder="https://example.com/tenda.jpg"
-            />
+            <label className="text-sm font-medium text-gray-700">Foto Barang (Maks 2 MB)</label>
+            <div className="flex items-center gap-4">
+              {previewUrl ? (
+                <img src={previewUrl} alt="Preview" className="w-16 h-16 object-cover rounded-lg border border-gray-200 flex-shrink-0" />
+              ) : (
+                <div className="w-16 h-16 bg-gray-50 border border-dashed border-gray-300 rounded-lg flex items-center justify-center text-gray-400 flex-shrink-0">
+                  <Upload size={20} />
+                </div>
+              )}
+              <div className="flex-1">
+                <input
+                  type="file"
+                  accept="image/png, image/jpeg, image/jpg, image/webp"
+                  onChange={handleFileChange}
+                  className="w-full text-xs text-gray-500 file:mr-3 file:py-2 file:px-3 file:rounded-lg file:border-0 file:text-xs file:font-semibold file:bg-[#32a149]/10 file:text-[#32a149] hover:file:bg-[#32a149]/20 cursor-pointer"
+                />
+                <p className="text-[11px] text-gray-400 mt-1">Format: JPG, JPEG, PNG, WEBP (Max 2MB)</p>
+              </div>
+            </div>
           </div>
 
           <div className="flex flex-col gap-1.5">
@@ -412,6 +466,7 @@ export default function DaftarBarangPage() {
         </form>
       </Modal>
 
+      {/* Delete Confirmation Modal */}
       <ConfirmModal
         isOpen={isConfirmOpen}
         onClose={() => setIsConfirmOpen(false)}

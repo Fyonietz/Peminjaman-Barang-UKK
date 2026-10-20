@@ -3,7 +3,7 @@ import {
   LayoutDashboard,
   Users,
   Wrench,
-  FolderOpen,
+  FolderUser,
   Save,
   CornerDownLeft,
   Clock,
@@ -12,7 +12,9 @@ import {
   FileText,
   List,
 ChartBarStacked,
-ShelvingUnit
+ShelvingUnit,
+UserShield,
+Folder
 } from 'lucide-react';
 
 export interface SidebarItem {
@@ -35,12 +37,12 @@ export const sidebarItems: SidebarItem[] = [
       {
         label : 'Peminjam',
         path:'/dashboard/users/peminjam',
-        icon:Users
+        icon:FolderUser
       },
       {
         label : 'Petugas',
         path:'/dashboard/users/petugas',
-        icon:Users
+        icon:UserShield
       }
     ]
   },

@@ -10,6 +10,8 @@ import UnitBarang from './pages/Admin/UnitBarangPage';
 const DashboardHome = () => <h2>Welcome to the Dashboard!</h2>;
 const UsersPage = () => <h2>Users Management</h2>;
 
+import PeminjamPage from './pages/Admin/PeminjamPage';
+import PetugasPage from './pages/Admin/PetugasPage';
 export default function App() {
   return (
     <BrowserRouter>
@@ -21,10 +23,14 @@ export default function App() {
         {/* Protected/Dashboard Routes */}
         <Route path="/dashboard" element={<DashboardLayout />}>
           <Route index element={<DashboardHome />} />
+          {/* Barang */}
           <Route path="barang/kategori" element={<KategoriBarang />} />
           <Route path="barang" element={<DaftarBarang />} />
           <Route path="barang/unit" element={<UnitBarang />} />
 
+          {/* User */}
+          <Route path="/dashboard/users/peminjam" element={<PeminjamPage />} />
+          <Route path="/dashboard/users/petugas" element={<PetugasPage />} />
         </Route>
       </Routes>
     </BrowserRouter>
