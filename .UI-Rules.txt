@@ -1,0 +1,3 @@
+Main Color : 2BA84A
+Background Color : 264027
+Font Text : FFFFFF

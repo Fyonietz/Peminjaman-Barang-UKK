@@ -1,0 +1,306 @@
+@import "tailwindcss";
+
+@theme {
+  /* --- Tailwind System Variables (v4 approach) --- */
+  --color-border: hsl(214.3 31.8% 91.4%);
+  --color-input: hsl(214.3 31.8% 91.4%);
+  --color-ring: hsl(222.2 84% 4.9%);
+  --color-background: hsl(0 0% 100%);
+  --color-foreground: hsl(222.2 84% 4.9%);
+
+  --color-primary: hsl(142.1 76.2% 36.3%);
+  --color-primary-foreground: hsl(355.7 100% 97.3%);
+
+  --color-secondary: hsl(210 40% 96.1%);
+  --color-secondary-foreground: hsl(222.2 47.4% 11.2%);
+
+  --color-destructive: hsl(0 84.2% 60.2%);
+  --color-destructive-foreground: hsl(210 40% 98%);
+
+  --color-muted: hsl(210 40% 96.1%);
+  --color-muted-foreground: hsl(215.4 16.3% 46.9%);
+
+  --color-accent: hsl(210 40% 96.1%);
+  --color-accent-foreground: hsl(222.2 47.4% 11.2%);
+
+  --color-card: hsl(0 0% 100%);
+  --color-card-foreground: hsl(222.2 84% 4.9%);
+
+  --color-popover: hsl(0 0% 100%);
+  --color-popover-foreground: hsl(222.2 84% 4.9%);
+
+  --radius-lg: 0.5rem;
+  --radius-md: calc(0.5rem - 2px);
+  --radius-sm: calc(0.5rem - 4px);
+}
+
+@layer base {
+  :root {
+    /* --- Custom Theme Variables for Vanilla CSS Components --- */
+    --bg-canvas: #1f1f1f;
+    --sidebar-bg: #29422c;
+    --content-bg: #ffffff;
+    --text-light: #ffffff;
+
+    /* Navigation */
+    --nav-btn-bg: #32a149;
+    --nav-btn-active-bg: #32a149;
+    --nav-btn-active-text: #ffffff;
+    --nav-btn-unfocused-bg: transparent;
+    --nav-btn-unfocused-text: #a0c2a6;
+    --nav-btn-hover: #345738;
+
+    /* Logout */
+    --logout-bg: #a3221d;
+    --logout-hover: #8a1d18;
+
+    /* Layout */
+    --sidebar-width: 280px;
+  }
+
+  * {
+    @apply border-border;
+  }
+
+  body {
+    @apply bg-background text-foreground;
+  }
+}
+
+/* =========================================
+   Reset & Global Styles
+   ========================================= */
+
+
+body, html, #root {
+  height: 100%;
+  width: 100%;
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+}
+
+/* =========================================
+   Layout Containers
+   ========================================= */
+.app-container {
+  display: flex;
+  height: 100vh;
+  width: 100vw;
+  overflow: hidden;
+}
+
+/* src/index.css */
+.main-content {
+  flex-grow: 1;
+  min-width: 0; /* <--- ADD THIS LINE: Allows flex item to shrink and contain horizontal overflow */
+  background-color: var(--content-bg);
+  padding: 40px;
+  color: #333;
+  overflow-y: auto;
+}
+
+/* =========================================
+   Sidebar Area
+   ========================================= */
+.sidebar {
+  width: var(--sidebar-width);
+  background-color: var(--sidebar-bg);
+  display: flex;
+  flex-direction: column;
+  padding: 30px 20px;
+  height: 100%;
+}
+
+.sidebar-header {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  margin-bottom: 40px;
+  padding: 0 10px;
+}
+
+.sidebar-header h1 {
+  font-size: 1.1rem;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+  color: var(--text-light);
+}
+
+.avatar-placeholder {
+  width: 50px;
+  height: 50px;
+  background-color: var(--content-bg);
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: #333;
+}
+
+/* =========================================
+   Navigation Menu
+   ========================================= */
+.nav-menu {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  flex-grow: 1;
+}
+
+.nav-button {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  padding: 14px 20px;
+  background-color: var(--nav-btn-unfocused-bg);
+  color: var(--nav-btn-unfocused-text);
+  border: none;
+  border-radius: 10px;
+  font-size: 0.9rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  text-decoration: none;
+}
+
+.nav-button:hover {
+  background-color: var(--nav-btn-hover);
+  color: var(--text-light);
+}
+
+.nav-button.active {
+  background-color: var(--nav-btn-active-bg);
+  color: var(--nav-btn-active-text);
+}
+
+.nav-button .icon {
+  margin-right: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 24px;
+}
+
+/* =========================================
+   Logout Button
+   ========================================= */
+.logout-button {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  padding: 14px 20px;
+  background-color: var(--logout-bg);
+  color: var(--text-light);
+  border: none;
+  border-radius: 10px;
+  font-size: 0.9rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+  margin-top: auto;
+}
+
+.logout-button:hover {
+  background-color: var(--logout-hover);
+}
+
+.logout-button .icon {
+  margin-right: 20px;
+}
+
+/* =========================================
+   Login Page Styles
+   ========================================= */
+.login-wrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  width: 100vw;
+  background-color: var(--sidebar-bg);
+}
+
+.login-container {
+  display: flex;
+  width: 900px;
+  height: 500px;
+  background-color: var(--content-bg);
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+}
+
+.login-left-panel {
+  width: 50%;
+  flex-shrink: 0;
+  background-image: url('/camping.jpeg');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+
+.login-right-panel {
+  width: 50%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 40px 60px;
+}
+
+.login-title {
+  color: var(--sidebar-bg);
+  font-size: 1.5rem;
+  font-weight: 700;
+  text-align: center;
+  margin-bottom: 30px;
+}
+
+.login-form {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.input-group {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.input-group label {
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: #333;
+}
+
+.input-group input {
+  padding: 10px 12px;
+  border: 1px solid var(--nav-btn-bg);
+  border-radius: 6px;
+  font-size: 0.9rem;
+  outline: none;
+  transition: border-width 0.1s ease;
+}
+
+.input-group input:focus {
+  border-width: 2px;
+}
+
+.login-submit-btn {
+  margin-top: 15px;
+  padding: 12px;
+  background-color: transparent;
+  color: #333;
+  font-weight: 700;
+  font-size: 0.85rem;
+  border: 1px solid var(--nav-btn-bg);
+  border-radius: 6px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.login-submit-btn:hover {
+  background-color: var(--nav-btn-hover);
+  color: var(--text-light);
+}
+
+
