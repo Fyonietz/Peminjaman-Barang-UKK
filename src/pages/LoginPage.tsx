@@ -30,7 +30,7 @@ export default function LoginPage() {
       if (userRole === 'Admin') {
         navigate('/dashboard');
       } else if (userRole === 'Petugas') {
-        navigate('/dashboard'); // Adjust this if Petugas has a different base path
+        navigate('/dashboard/petugas'); // Adjust this if Petugas has a different base path
       } else {
         navigate('/'); // Peminjam goes to the public catalog
       }

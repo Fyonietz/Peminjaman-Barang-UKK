@@ -4,23 +4,21 @@ import {
   Users,
   Wrench,
   FolderUser,
-  Save,
-  CornerDownLeft,
   Clock,
-  Settings, // Imported extra icons for the children
-  Shield,
-  FileText,
   List,
-ChartBarStacked,
-ShelvingUnit,
-UserShield,
-Folder
+  UserCheck,
+  FileCheck,
+  RotateCcw,
+  FileSpreadsheet,
+  FolderTree,
+  Boxes
 } from 'lucide-react';
 
 export interface SidebarItem {
   label: string;
   path?: string;
-  icon: any; // Using 'any' or 'LucideIcon' depending on your setup
+  icon: any;
+  roles?: ('Admin' | 'Petugas')[];
   children?: SidebarItem[];
 }
 
@@ -29,42 +27,74 @@ export const sidebarItems: SidebarItem[] = [
     label: 'Dashboard',
     path: '/dashboard',
     icon: LayoutDashboard,
+    roles: ['Admin', 'Petugas'],
   },
   {
     label: 'Users',
     icon: Users,
-    children:[
+    roles: ['Admin'],
+    children: [
       {
-        label : 'Peminjam',
-        path:'/dashboard/users/peminjam',
-        icon:FolderUser
+        label: 'Peminjam',
+        path: '/dashboard/users/peminjam',
+        icon: FolderUser,
+        roles: ['Admin'],
       },
       {
-        label : 'Petugas',
-        path:'/dashboard/users/petugas',
-        icon:UserShield
-      }
-    ]
+        label: 'Petugas',
+        path: '/dashboard/users/petugas',
+        icon: UserCheck,
+        roles: ['Admin'],
+      },
+    ],
   },
   {
     label: 'Barang',
-    icon: Wrench, // Notice we removed the 'path' here since it's now a parent toggle
+    icon: Wrench,
+    roles: ['Admin'],
     children: [
       {
         label: 'Kategori',
         path: '/dashboard/barang/kategori',
-        icon: ChartBarStacked,
+        icon: FolderTree,
+        roles: ['Admin'],
       },
       {
         label: 'Daftar Barang',
-        path: '/dashboard/barang/',
+        path: '/dashboard/barang',
         icon: List,
+        roles: ['Admin'],
       },
       {
         label: 'Unit Barang',
         path: '/dashboard/barang/unit',
-        icon: ShelvingUnit,
-      }
-    ]
+        icon: Boxes,
+        roles: ['Admin'],
+      },
+    ],
+  },
+  {
+    label: 'Persetujuan Peminjaman',
+    path: '/dashboard/peminjaman',
+    icon: FileCheck,
+    roles: ['Petugas'],
+  },
+  {
+    label: 'Pengembalian & Monitor',
+    path: '/dashboard/pengembalian',
+    icon: RotateCcw,
+    roles: ['Petugas'],
+  },
+  {
+    label: 'Cetak Laporan',
+    path: '/dashboard/laporan',
+    icon: FileSpreadsheet,
+    roles: ['Petugas'],
+  },
+  {
+    label: 'Log Aktivitas',
+    path: '/dashboard/logs',
+    icon: Clock,
+    roles: ['Admin'],
   },
 ];
