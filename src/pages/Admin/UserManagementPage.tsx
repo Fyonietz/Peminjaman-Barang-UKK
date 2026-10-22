@@ -1,6 +1,7 @@
 // src/pages/Admin/UserManagementPage.tsx
-import { useState, useEffect, FormEvent } from 'react';
-import { Plus, Edit2, Trash2, Search, UserCheck } from 'lucide-react';
+import { useState, useEffect } from 'react';
+import type { FormEvent } from 'react';
+import { Plus, Edit2, Trash2, Search } from 'lucide-react';
 import { http } from '../../services/api';
 import Table, { type Column } from '../../components/ui/Table';
 import Modal from '../../components/ui/Modal';

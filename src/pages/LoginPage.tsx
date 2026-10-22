@@ -1,6 +1,7 @@
 // src/pages/LoginPage.tsx
-import { useState, FormEvent } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useState } from 'react';
+import type { FormEvent } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
 import { http } from '../services/api';
 
 export default function LoginPage() {
@@ -27,12 +28,10 @@ export default function LoginPage() {
 
       // Redirect based on role
       const userRole = response.data.user.role;
-      if (userRole === 'Admin') {
-        navigate('/dashboard');
-      } else if (userRole === 'Petugas') {
-        navigate('/dashboard/petugas'); // Adjust this if Petugas has a different base path
+      if (userRole === 'Peminjam') {
+        navigate('/dashboard/katalog');
       } else {
-        navigate('/'); // Peminjam goes to the public catalog
+        navigate('/dashboard');
       }
 
     } catch (err: any) {
@@ -93,6 +92,15 @@ export default function LoginPage() {
               {isLoading ? 'Memproses...' : 'Login'}
             </button>
           </form>
+
+          <p className="text-center text-xs text-gray-500">
+            Belum punya akun? Hubungi petugas CampGear di basecamp.
+          </p>
+          <p className="text-center text-xs">
+            <Link to="/" className="font-semibold text-[#29422c] hover:underline">
+              Kembali ke halaman utama
+            </Link>
+          </p>
         </div>
       </div>
     </div>

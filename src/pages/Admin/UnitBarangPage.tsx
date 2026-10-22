@@ -1,5 +1,6 @@
 // src/pages/Admin/UnitBarangPage.tsx
-import { useState, useEffect, FormEvent } from 'react';
+import { useState, useEffect } from 'react';
+import type { FormEvent } from 'react';
 import { Plus, Edit2, Trash2, QrCode } from 'lucide-react';
 import { http } from '../../services/api';
 import Table, { type Column } from '../../components/ui/Table';

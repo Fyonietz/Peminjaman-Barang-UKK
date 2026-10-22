@@ -1,5 +1,6 @@
 // src/pages/Admin/DaftarBarangPage.tsx
-import { useState, useEffect, FormEvent, ChangeEvent } from 'react';
+import { useState, useEffect } from 'react';
+import type { FormEvent, ChangeEvent } from 'react';
 import { Plus, Edit2, Trash2, Search, Package, Upload } from 'lucide-react';
 import { http } from '../../services/api';
 import Table, { type Column } from '../../components/ui/Table';

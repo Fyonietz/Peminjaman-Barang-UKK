@@ -1,5 +1,5 @@
 // src/components/ui/Table.tsx
-import { ReactNode } from 'react';
+import type { ReactNode } from 'react';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
 
 export interface Column<T> {

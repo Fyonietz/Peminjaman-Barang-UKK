@@ -3,6 +3,7 @@ import { useState } from 'react';
 import { NavLink, useLocation, useNavigate } from 'react-router-dom';
 import { ChevronDown, LogOut, X } from 'lucide-react';
 import { sidebarItems, type SidebarItem } from '../config/sidebar';
+import { http } from '../services/api';
 
 interface SidebarProps {
   onClose?: () => void;
@@ -19,9 +20,14 @@ export default function Sidebar({ onClose, open }: SidebarProps) {
   const userName = sessionData ? JSON.parse(sessionData)?.user?.nama : 'CampGear';
 
   const handleLogout = () => {
+    // Best effort: the token is stateless, so the client clears it regardless
+    http.post('/auth/logout').catch(() => {});
     localStorage.removeItem('campgear');
-    navigate('/login', { replace: true });
+    navigate('/', { replace: true });
   };
+
+  const panelTitle =
+    userRole === 'Petugas' ? 'Petugas Panel' : userRole === 'Peminjam' ? 'Peminjam Panel' : 'Admin Panel';
 
   // Filter top-level items by role
   const filteredItems = sidebarItems.filter((item) => {
@@ -40,7 +46,7 @@ export default function Sidebar({ onClose, open }: SidebarProps) {
           </svg>
         </div>
         <div>
-          <h1 className="text-base font-bold text-white">{userRole === 'Petugas' ? 'Petugas Panel' : 'Admin Panel'}</h1>
+          <h1 className="text-base font-bold text-white">{panelTitle}</h1>
           <p className="text-xs text-[#a0c2a6] font-medium">{userName}</p>
         </div>
 

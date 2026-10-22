@@ -5,7 +5,6 @@ import {
   FileCheck,
   RotateCcw,
   Wrench,
-  Users,
   Clock,
   ArrowRight,
   AlertTriangle,
@@ -30,7 +29,6 @@ export default function DashboardPage() {
   const [pendingCount, setPendingCount] = useState(0);
   const [overdueCount, setOverdueCount] = useState(0);
   const [totalAlat, setTotalAlat] = useState(0);
-  const [totalUsers, setTotalUsers] = useState(0);
   const [pendapatan, setPendapatan] = useState(0);
 
   // State for Table
@@ -63,20 +61,18 @@ export default function DashboardPage() {
       setDueList(items);
       setOverdueCount(items.filter((i) => i.hariTerlambat > 0).length);
 
-      // 3. Fetch data khusus ADMIN (Total Alat, Total User, Pendapatan Bulan Ini)
+      // 3. Fetch data khusus ADMIN (Total Alat, Pendapatan Bulan Ini)
       if (isAdmin) {
         const today = new Date();
         const firstDay = new Date(today.getFullYear(), today.getMonth(), 1).toISOString().split('T')[0];
         const lastDay = new Date(today.getFullYear(), today.getMonth() + 1, 0).toISOString().split('T')[0];
 
-        const [alatRes, userRes, laporanRes] = await Promise.all([
+        const [alatRes, laporanRes] = await Promise.all([
           http.get('/alat', { params: { pageSize: 1 } }),
-          http.get('/users', { params: { pageSize: 1 } }),
           http.get('/laporan/peminjaman', { params: { from: firstDay, to: lastDay, format: 'json' } })
         ]);
 
         setTotalAlat(alatRes.data.total || 0);
-        setTotalUsers(userRes.data.total || 0);
         setPendapatan(laporanRes.data.totalBiaya || 0);
       }
     } catch (error) {

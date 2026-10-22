@@ -1,5 +1,6 @@
 // src/pages/Admin/LaporanPage.tsx
-import { useState, useEffect, FormEvent } from 'react';
+import { useState, useEffect } from 'react';
+import type { FormEvent } from 'react';
 import { FileSpreadsheet, Download, Calendar, Search, FileText } from 'lucide-react';
 import { http } from '../../services/api';
 import Table, { type Column } from '../../components/ui/Table';

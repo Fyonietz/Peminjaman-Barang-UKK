@@ -11,14 +11,16 @@ import {
   RotateCcw,
   FileSpreadsheet,
   FolderTree,
-  Boxes
+  Boxes,
+  Compass,
+  ClipboardList
 } from 'lucide-react';
 
 export interface SidebarItem {
   label: string;
   path?: string;
   icon: any;
-  roles?: ('Admin' | 'Petugas')[];
+  roles?: ('Admin' | 'Petugas' | 'Peminjam')[];
   children?: SidebarItem[];
 }
 
@@ -72,6 +74,18 @@ export const sidebarItems: SidebarItem[] = [
         roles: ['Admin'],
       },
     ],
+  },
+  {
+    label: 'Katalog Alat',
+    path: '/dashboard/katalog',
+    icon: Compass,
+    roles: ['Peminjam'],
+  },
+  {
+    label: 'Peminjaman Saya',
+    path: '/dashboard/peminjaman-saya',
+    icon: ClipboardList,
+    roles: ['Peminjam'],
   },
   {
     label: 'Persetujuan Peminjaman',

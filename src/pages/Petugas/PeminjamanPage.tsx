@@ -1,6 +1,7 @@
 // src/pages/Admin/PeminjamanPage.tsx
-import { useState, useEffect, FormEvent } from 'react';
-import { FileCheck, XCircle, CheckCircle, PackageCheck, Eye, Search } from 'lucide-react';
+import { useState, useEffect } from 'react';
+import type { FormEvent } from 'react';
+import { XCircle, CheckCircle, PackageCheck, Eye } from 'lucide-react';
 import { http } from '../../services/api';
 import Table, { type Column } from '../../components/ui/Table';
 import Modal from '../../components/ui/Modal';
